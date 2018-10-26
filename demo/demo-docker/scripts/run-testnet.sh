@@ -10,7 +10,7 @@ docker network create \
   --subnet=172.77.0.0/16 \
   --ip-range=172.77.5.0/24 \
   --gateway=172.77.5.254 \
-  babblenet
+  babblenet  || true
 
 for i in $(seq 1 $N)
 do

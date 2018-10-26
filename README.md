@@ -1,10 +1,12 @@
-# EVM-BABBLE
-Ethereum Virtual Machine and Babble Consensus
+# EVM-Londoncoin
+Ethereum Virtual Machine and LondonCoin Consensus
+LondonCoin is building the improved core utilizing "Push-Pull" algorithm.
+Original code provided by Mosaic Networks.
 
-EVM-BABBLE is a wrapper for the Ethereum Virtual Machine (EVM) which is intended    
-to work in conjunction with a Babble node. Ethereum transactions are passed to Babble  
+EVM-Londoncoin is a wrapper for the Ethereum Virtual Machine (EVM) which is intended    
+to work in conjunction with a Londoncoin node. Ethereum transactions are passed to Londoncoin  
 to be broadcasted to other nodes and eventually fed back to the State in Consensus  
-order. Babble ensures that all network participants process the same transactions  
+order. Londoncoin ensures that all network participants process the same transactions  
 in the same order. An API service runs in parallel to handle private accounts  
 and expose Ethereum functionality.  
 
@@ -21,14 +23,14 @@ and expose Ethereum functionality.
                 =  ===============         ===============  =
                 =         |                       |         =
                 =  =======================================  =
-                =  = Babble Proxy                        =  =
+                =  = Londoncoin Proxy                        =  =
                 =  =                                     =  =
                 =  =======================================  =
                 =         |                       ^         =  
                 ==========|=======================|==========
                           |Txs                    |Blocks(txs)
                 ==========|=======================|==========
-                = Babble  v                       |         =
+                = Londoncoin  v                       |         =
                 =                                           =                                             
                 =                   ^                       =
                 ====================|========================  
@@ -59,25 +61,25 @@ This will download all the depencies and put them in the vendor folder.
 
 ## Usage
 
-The application needs to be started in conjunction with a Babble node otherwise it  
+The application needs to be started in conjunction with a Londoncoin node otherwise it  
 wont work.
 
-The **babble_addr** option specifies the endpoint where the Babble node is listening  
-to the App. This corresponds to the **proxy_addr** flag used when starting Babble.
+The **Londoncoin** option specifies the endpoint where the Londoncoin node is listening  
+to the App. This corresponds to the **proxy_addr** flag used when starting Londoncoin.
 
-The **proxy_addr** option specifies the endpoint where the App is listening to Babble.  
-This corresponds to the **client_addr** flag used when starting Babble.
+The **proxy_addr** option specifies the endpoint where the App is listening to Londoncoin.  
+This corresponds to the **client_addr** flag used when starting Londoncoin.
 
 ```
 NAME:
-   evm-babble run - 
+   evm-londoncoin run - 
 
 USAGE:
-   evm-babble run [command options] [arguments...]
+   evm-londoncoin run [command options] [arguments...]
 
 OPTIONS:
-   --datadir value      Directory for the databases and keystore (default: "/home/<user>/.evm-babble")
-   --babble_addr value  IP:Port of Babble node (default: "127.0.0.1:1338")
+   --datadir value      Directory for the databases and keystore (default: "/home/<user>/.evm-londoncoin")
+   --babble_addr value  IP:Port of Londoncoin node (default: "127.0.0.1:1338")
    --proxy_addr value   IP:Port to bind Proxy server (default: "127.0.0.1:1339")
    --api_addr value     IP:Port to bind API server (default: ":8080")
    --log_level value    debug, info, warn, error, fatal, panic (default: "debug")
@@ -91,7 +93,7 @@ OPTIONS:
 The application writes data and reads configuration from the directory specified  
 by the --datadir flag. The directory structure **MUST** be as follows:
 ```
-host:~/.evm-babble$ tree
+host:~/.evm-londoncoin$ tree
 eth
 ├── genesis.json
 └── keystore
@@ -119,13 +121,13 @@ Example Ethereum genesis.json defining two account:
    }
 }
 ```
-It is possible to enable evm-babble to control certain accounts by providing a  
+It is possible to enable evm-londoncoin to control certain accounts by providing a  
 list of encrypted private keys in the keystore directory. With these private keys,  
-evm-babble will be able to sign transactions on behalf of the accounts associated  
+evm-londoncoin will be able to sign transactions on behalf of the accounts associated  
 with the keys.  
 
 ```
-host:~/.evm-babble/keystore$ tree
+host:~/.evm-londoncoin/keystore$ tree
 .
 ├── UTC--2016-02-01T16-52-27.910165812Z--629007eb99ff5c3539ada8a5800847eacfc25727
 ├── UTC--2016-02-01T16-52-28.021010343Z--e32e14de8b81d8d3aedacb1868619c74a68feab0
@@ -138,10 +140,10 @@ of the password file.
 
 ## Database
 
-EVM-Babble will use a LevelDB database to persist state objects. The file of the  
+EVM-Londoncoin will use a LevelDB database to persist state objects. The file of the  
 database can be specified with the ```db``` flag which defaults to ```<datadir>/chaindata```.  
 
-If a database already exists when starting a new evm-babble instance, the state  
+If a database already exists when starting a new evm-londoncoin instance, the state  
 will be set to the one corresponding to the last committed transaction.  
 
 ## API
@@ -150,7 +152,7 @@ clients to interact with Ethereum.
 
 ### Get controlled accounts 
 
-This endpoint returns all the accounts that are controlled by the evm-babble  
+This endpoint returns all the accounts that are controlled by the evm-londoncoin  
 instance. These are the accounts whose private keys are present in the keystore.  
 
 example:
@@ -187,7 +189,7 @@ host:~$ curl http://[api_addr]/account/0x629007eb99ff5c3539ada8a5800847eacfc2572
 
 ### Send transactions from controlled accounts
 
-Send a transaction from an account controlled by the evm-babble instance. The  
+Send a transaction from an account controlled by the evm-londoncoin instance. The  
 transaction will be signed by the service since the corresponding private key is  
 present in the keystore.  
 
@@ -237,9 +239,9 @@ Then check accounts again to see that the balances have changed:
 ### Send raw signed transactions
 
 Most of the time, one will require to send transactions from accounts that are not  
-controlled by the evm-babble instance. The transaction will be assembled, signed  
+controlled by the evm-londoncoin instance. The transaction will be assembled, signed  
 and encoded on the client side. The resulting raw signed transaction bytes can be  
-submitted to evm-babble through the ```/rawtx``` endpoint.  
+submitted to evm-londoncoin through the ```/rawtx``` endpoint.  
 
 example:
 ```bash
@@ -251,7 +253,7 @@ host:~$ curl -X POST http://[api_addr]/rawtx -d '0xf8628080830f424094564686380e2
 
 ## Deployment
 
-The ```demo``` folder contains examples of how to use **evm-babble** and **babble**  
+The ```demo``` folder contains examples of how to use **evm-londoncoin** and **londoncoin**  
 to create a permissionned network of nodes. There are two deployment scenarios:
 
 - **docker**: Uses Docker to create a testnet with a configuratble number of nodes  
@@ -259,7 +261,7 @@ to create a permissionned network of nodes. There are two deployment scenarios:
 - **terraform**: Uses Terraform to deploy a testnet on AWS.
 
 There are also some example scripts and javascript files that provide a way to  
-interract with evm-babble - query accounts, send transactions, upload and call  
+interract with evm-londoncoin - query accounts, send transactions, upload and call  
 SmartContracts.
 
 See the README in that directory for more info.   
